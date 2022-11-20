@@ -1,0 +1,9 @@
+int a = 100;
+for (int i = 99;  i >= 1; i = i - 2)
+{
+    if (i <= 60 && i >= 40)
+    {
+        continue;
+    }
+    Console.WriteLine(i);
+}
