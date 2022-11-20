@@ -1,0 +1,19 @@
+int n = Convert.ToInt32(Console.ReadLine());
+for (int i = 0; i < n; i++)
+ {
+        int a = Convert.ToInt32(Console.ReadLine());
+        int b = Convert.ToInt32(Console.ReadLine());
+        int c = Convert.ToInt32(Console.ReadLine());
+        if (a < c && b < c) // c
+        {
+            Console.WriteLine(c);
+        }
+        else if (a < b && c < b) // b
+        {
+            Console.WriteLine(b);
+        }
+        else if (b < a && c < a) // a
+        {
+            Console.WriteLine(a);
+        }
+   }
