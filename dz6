@@ -1,0 +1,8 @@
+int n = Convert.ToInt32(Console.ReadLine());
+int suma = 0;
+for (int i = 0; i < n; i++)
+{
+    int a = Convert.ToInt32(Console.ReadLine());
+    suma = suma + a;
+}
+Console.WriteLine(suma);
