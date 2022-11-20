@@ -1,0 +1,25 @@
+int cout = 0;
+int a = Convert.ToInt32(Console.ReadLine());
+while (a != 0)
+{
+    int c = a - 1;
+    bool b = true;
+    for (int i = c; i >= 2; i--)
+    {
+        if (a % i == 0)
+        {
+            b = false;
+        }
+    }
+    if (b == true)
+    {
+        cout++;
+        Console.WriteLine($"Число простиое");
+    }
+    else
+    {
+        Console.WriteLine("Составное число");
+    }
+    a = Convert.ToInt32(Console.ReadLine());
+}
+Console.WriteLine(cout);
