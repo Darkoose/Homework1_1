@@ -1,0 +1,16 @@
+using System.Globalization;
+using System.Reflection.PortableExecutable;
+string func(int a)
+{
+    if ( a % 2 == 0)
+    {
+        return "четное";
+    }
+    else
+    {
+        return "Не четное";
+    }
+}
+int a = Convert.ToInt32(Console.ReadLine());
+string b = func(a);
+Console.WriteLine(b);
