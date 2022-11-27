@@ -1,0 +1,11 @@
+int n = Convert.ToInt32(Console.ReadLine());
+int[] nomber = new int[n];
+for (int i = 0; i < n; i++)
+{
+    nomber[i] = Convert.ToInt32(Console.ReadLine());
+}
+ for (int i = 0; i < n; i++)
+{
+    int g = nomber[i] * nomber[i];
+    Console.WriteLine(g);
+}
