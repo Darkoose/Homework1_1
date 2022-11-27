@@ -1,0 +1,18 @@
+Pet Dog = new Pet();
+Dog.name = "Cuper";
+Dog.vid = "Собака";
+Dog.age = 3;
+Dog.chip = "Да";
+Dog.show_info();
+
+class Pet
+{
+    public string name;
+    public string vid;
+    public int age;
+    public string chip;
+    public void show_info()
+    {
+        Console.WriteLine($"Кличка: {name} Вид: {vid} Возраст: {age} Чипировано: {chip}");
+    }
+}
