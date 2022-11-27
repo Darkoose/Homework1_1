@@ -1,0 +1,15 @@
+int n = Convert.ToInt32(Console.ReadLine());
+for (int i = 1; i <= n; i++)
+{
+    int a = Convert.ToInt32(Console.ReadLine());
+    int b = Convert.ToInt32(Console.ReadLine());
+    int c = Convert.ToInt32(Console.ReadLine());
+    if (a < b + c && b < a + c && c < a + b)
+    {
+        Console.WriteLine("Треугольник существует");
+    }
+    else
+    {
+        Console.WriteLine("Треугольник не существует");
+    }
+}
