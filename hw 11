@@ -1,0 +1,13 @@
+using System.Reflection.PortableExecutable;
+
+int cot = 0;
+int sch = 0;
+int n = Convert.ToInt32(Console.ReadLine());
+while (n != 0)
+{
+    sch++;
+    cot = cot + n;
+    n = Convert.ToInt32(Console.ReadLine());
+}
+int arf = cot / sch;
+Console.WriteLine(arf);
