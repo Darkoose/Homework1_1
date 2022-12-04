@@ -1,0 +1,75 @@
+class Program
+{
+    static void Main(string[] args)
+    {
+        double first = Convert.ToDouble(Console.ReadLine());
+        double step = Convert.ToDouble(Console.ReadLine());
+        int amount = Convert.ToInt32(Console.ReadLine());
+        Masiv mass1 = new Masiv(first, step, amount);
+        mass1.display();
+        Console.WriteLine(mass1.product());
+
+        string stroka = Console.ReadLine();
+        Masiv mass2 = new Masiv(stroka);
+        mass2.display();
+        Console.WriteLine(mass2.product());
+    }
+}
+class Masiv
+{
+    double[] array;
+    int collich;
+    public Masiv(double first, double step, int amount)
+    {
+        array = new double[amount];
+        double value = first;
+        for (int i = 0; i < amount; i++)
+        {
+            array[i] = value;
+            value = value + step;
+        }
+        collich = amount;
+    }
+    public Masiv(string data)
+    {
+        string[] string_array = data.Split("; ");
+        int len = string_array.Length;
+        array = new double[len];
+        for (int i = 0; i < len; i++)
+        {
+            array[i] = Convert.ToDouble(string_array[i]);
+        }
+        collich = len;
+    }
+    int get_collich()
+    {
+        return collich;
+    }
+    public double product()
+    {
+        bool b = false;
+        double proizved = 1;
+        for (int i = 0; i < collich; i++)
+        {
+         if (b == true)
+            {
+                proizved = Math.Abs(array[i]) * proizved;
+            }
+         if (b == false && array[i] == 0)
+            {
+                b = true;
+            }
+         
+        }
+        return proizved;
+    }
+    public void display()
+    {
+        for (int i = 0; i != collich; i++)
+        {
+            int g = i + 1;
+            Console.WriteLine(g+ ": " + array[i]);
+        }
+        Console.WriteLine("Количество элементов: "+collich);
+    }
+}
