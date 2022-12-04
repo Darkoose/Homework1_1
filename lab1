@@ -1,0 +1,43 @@
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.ExceptionServices;
+Treug triangel1 = new Treug();
+triangel1.Display();
+triangel1.Read();
+triangel1.Display();
+Treug triangel2 = new Treug(4, 7);
+triangel2.Display();
+
+class Treug
+{
+    double first;
+    double second;
+    public Treug()
+    {
+
+        first = 0;
+        second = 0;
+    }
+    public Treug(double a, double b) 
+    {
+
+        first = a;
+        second = b;
+    }
+
+    public double Hypotenuse()
+    {
+        double x = Math.Sqrt((first * first) + (second * second));
+        return x;
+    }
+    public void Display()
+    {
+        Console.WriteLine($"Катет один {first}");
+        Console.WriteLine($"Катет два {second}");
+        Console.WriteLine($"Гипотенуза {Hypotenuse()}");
+    }
+    public void Read()
+    {
+       first = Convert.ToDouble( Console.ReadLine());
+       second = Convert.ToDouble(Console.ReadLine());
+    }
+}
