@@ -1,19 +1,23 @@
+using System.ComponentModel.DataAnnotations;
+using System.Net.Http.Headers;
+using System.Reflection.Metadata;
+
 class Program
 {
     static void Main(string[] args)
-    {
-        double first = Convert.ToDouble(Console.ReadLine());
-        double step = Convert.ToDouble(Console.ReadLine());
-        int amount = Convert.ToInt32(Console.ReadLine());
-        Masiv mass1 = new Masiv(first, step, amount);
-        mass1.display();
-        Console.WriteLine(mass1.product());
+{
+double first = Convert.ToDouble(Console.ReadLine());
+double step = Convert.ToDouble(Console.ReadLine());
+int amount = Convert.ToInt32(Console.ReadLine());
+Masiv mass1 = new Masiv(first, step, amount);
+mass1.display();
+Console.WriteLine(mass1.product());
 
-        string stroka = Console.ReadLine();
-        Masiv mass2 = new Masiv(stroka);
-        mass2.display();
-        Console.WriteLine(mass2.product());
-    }
+string stroka = Console.ReadLine();
+Masiv mass2 = new Masiv(stroka);
+mass2.display();
+Console.WriteLine(mass2.product());
+}
 }
 class Masiv
 {
@@ -37,11 +41,22 @@ class Masiv
         array = new double[len];
         for (int i = 0; i < len; i++)
         {
+            if (String.IsNullOrEmpty(string_array[i]))
+            {
+                Console.WriteLine("Объект не сконструирован, так как данные введены неверно.");
+            }
+            for (int j = 0; j < string_array[i].Length; j++)
+            {
+                if ((string_array[i][j] <= '0' || string_array[i][j] >= '9') && (string_array[i][j] != ','))
+                {
+                    Console.WriteLine("Объект не сконструирован, так как данные введены неверно.");
+                }
+            }
             array[i] = Convert.ToDouble(string_array[i]);
         }
         collich = len;
     }
-    int get_collich()
+    public int get_collich()
     {
         return collich;
     }
@@ -51,15 +66,15 @@ class Masiv
         double proizved = 1;
         for (int i = 0; i < collich; i++)
         {
-         if (b == true)
+            if (b == true)
             {
                 proizved = Math.Abs(array[i]) * proizved;
             }
-         if (b == false && array[i] == 0)
+            if (b == false && array[i] == 0)
             {
                 b = true;
             }
-         
+
         }
         return proizved;
     }
@@ -68,8 +83,8 @@ class Masiv
         for (int i = 0; i != collich; i++)
         {
             int g = i + 1;
-            Console.WriteLine(g+ ": " + array[i]);
+            Console.WriteLine(g + ": " + array[i]);
         }
-        Console.WriteLine("Количество элементов: "+collich);
+        Console.WriteLine("Количество элементов: " + collich);
     }
 }
