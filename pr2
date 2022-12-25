@@ -1,0 +1,134 @@
+using System;
+using System.Globalization;
+using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
+using System.Security.Cryptography.X509Certificates;
+
+Matrix A = new Matrix(2, 2);
+Matrix B = new Matrix(2, 2);
+A.mat[0, 0] = 1;
+A.mat[0, 1] = 2;
+A.mat[1, 0] = 3;
+A.mat[1, 1] = 4;
+B.mat[0, 0] = 9;
+B.mat[0, 1] = 10;
+B.mat[1, 0] = -1;
+B.mat[1, 1] = 0.5;
+Matrix H = A + B;
+H.print();
+Matrix F = A - B;
+F.print();
+Matrix G = A;
+G.print();
+Console.WriteLine(A == G);
+Console.WriteLine(A == B);
+Console.WriteLine(A[0, 0]);
+A += B;
+A.print();
+; class Matrix
+{
+    //сама матрица
+    public double[,] mat;
+    //количество строк
+    public int n;
+    //количество столбцов
+    public int m;
+
+    //Конструктор
+    public Matrix(int x, int y)
+    {
+        n = x;
+        m = y;
+        mat = new double[n, m];
+    }
+
+    public void print()
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                Console.Write(Convert.ToString(mat[i, j]));
+                Console.Write(" ");
+            }
+            Console.WriteLine();
+        }
+
+    }
+    public static Matrix operator +(Matrix left, Matrix right)
+    {
+        Matrix result = new Matrix(left.n, left.m);
+        for (int i = 0; i < left.n; i++)
+        {
+            for (int j = 0; j < left.m; j++)
+            {
+                result.mat[i, j] = left.mat[i, j] + right.mat[i, j];
+            }
+        }
+        return result;
+    }
+
+    public static Matrix operator -(Matrix left, Matrix right)
+    {
+        Matrix result = new Matrix(left.n, left.m);
+        for (int i = 0; i < left.n; i++)
+        {
+            for (int j = 0; j < left.m; j++)
+            {
+                result.mat[i, j] = left.mat[i, j] - right.mat[i, j];
+            }
+        }
+        return result;
+    }
+    /*public static Matrix operator =(Matrix left, Matrix right)
+    {
+        Matrix result = new Matrix(left.n, left.m);
+        for (int i = 0; i < left.n; i++)
+        {
+            for (int j = 0; j < left.m; j++)
+            {
+                left.mat[i, j] = right.mat[i, j];
+            }
+        }
+        return result;
+    }*/
+
+    public static bool operator ==(Matrix left, Matrix right)
+    {
+        for (int i = 0; i < left.n; i++)
+        {
+            for (int j = 0; j < left.m; j++)
+            {
+                if (left.mat[i, j] != right.mat[i, j])
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public static bool operator !=(Matrix left, Matrix right)
+    {
+        for (int i = 0; i < left.n; i++)
+        {
+            for (int j = 0; j < left.m; j++)
+            {
+                if (left.mat[i, j] != right.mat[i, j])
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public double this[int pos_x, int pos_y]
+    {
+        get
+        {
+            return this.mat[pos_x, pos_y];
+        }
+    }
+
+}
