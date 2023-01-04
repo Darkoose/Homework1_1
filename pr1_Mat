@@ -1,0 +1,84 @@
+void BFS(Graph g)
+{
+    int[] mark = new int[g.numEdges]; // массив пометок
+    int[] parent = new int[g.numEdges]; // массив предков
+    for (int i = 0; i < g.numEdges; i++)
+    {
+        mark[i] = 0;
+        parent[i] = 0;
+    }
+    Console.WriteLine("Вершины в порядке обхода");
+    Queue<int> Q = new Queue<int>(); // создание очереди
+    int v = 0;
+    mark[v] = 1;
+    Q.Enqueue(v);
+    Console.WriteLine(v);
+    while (Q.Count != 0) //Пока очередь не исчерпана
+    { //взять из очереди очередную вершину
+       
+        v = Q.Dequeue();
+        for (int i = 0; i < g.numEdges; i++)
+        {
+            if ((g.adjacency[v, i] != 0) && (mark[i] == 0))
+            { // все непомеченные вершины,
+                mark[i] = 1; // смежные с текущей, помечаются
+                Q.Enqueue(i); // и помещаются в конец очереди
+                parent[i] = v; // v – предок открытой вершины
+                Console.WriteLine(i);
+            }
+        }
+        mark[v] = 2; // вершина обработана
+    }
+    Console.WriteLine();
+}
+
+Graph tabl = new Graph("E:\\vstudio\\rep\\pr1Mat\\pr1Mat\\TextFile2.txt");
+Console.WriteLine(tabl.numEdges);
+for (int i = 0; i < tabl.numEdges; i++)
+{
+    for (int j = 0; j < tabl.numEdges; j++)
+    {
+        Console.Write(tabl.adjacency[i, j]);
+
+        Console.Write(" ");
+    }
+    Console.WriteLine();
+}
+BFS(tabl);
+
+public class Graph
+{
+    public int[,] adjacency;
+    public int numEdges; // количество вершин графа
+                         //конструктор, считывающий граф из файла
+    public Graph(string fileName)
+    {
+        int n, j;
+        string line;
+        char[] delimiterChars = new char[] { ',', ' ', ';', '.' };
+        using (StreamReader file = new StreamReader(fileName))
+        {
+            n = int.Parse(file.ReadLine()); // ввод размерности
+            this.numEdges = n;
+            this.adjacency = new int[n, n];
+            // ввод матрицы
+            for (int i = 0; (i < n) &&
+            ((line = file.ReadLine()) != null); i++)
+            {
+                string[] numbers = line.Split(delimiterChars,
+                StringSplitOptions.RemoveEmptyEntries);
+                j = 0;
+                foreach (string numString in numbers)
+                {
+                    int x;
+                    bool canConvert = int.TryParse(numString, out x);
+                    if (canConvert == true)
+                    {
+                        this.adjacency[i, j] = x;
+                        j++;
+                    }
+                }
+            }
+        }
+    }
+}
