@@ -1,0 +1,114 @@
+int[] distance;
+int[] parent;
+void DijkstraAlgm(Graph g, int vBegin)
+{
+    distance = new int[g.numEdges];
+    parent = new int[g.numEdges];
+    int[,] matr = new int[g.numEdges, g.numEdges];
+    // инициализация
+    for (int i = 0; i < g.adjacency.GetLength(0); i++)
+        for (int j = 0; j < g.numEdges; j++)
+        {
+            matr[i, j] = g.adjacency[i, j];
+            if (g.adjacency[i, j] == 0)
+                matr[i, j] = int.MaxValue;
+        }
+    HashSet<int> edges = new HashSet<int>();
+    for (int i = 0; i < g.numEdges; i++)
+    {
+        edges.Add(i);
+        distance[i] = matr[vBegin, i];
+        if (distance[i] < int.MaxValue)
+            parent[i] = vBegin;
+    }
+    distance[vBegin] = 0;
+    parent[vBegin] = -1;
+    edges.Remove(vBegin);
+    while (edges.Count != 0)
+    {
+        int minDistance = int.MaxValue;
+        int minEdge = -1;
+        foreach (int u in edges)
+        {
+            if (distance[u] < minDistance)
+            {
+                minDistance = distance[u];
+                minEdge = u;
+            }
+        }
+        if (minEdge != -1)
+            edges.Remove(minEdge);
+        foreach (int u in edges)
+        {
+            if (matr[minEdge, u] < int.MaxValue)
+            {
+                distance[u] = Math.Min(
+               distance[u],
+               distance[minEdge] + matr[minEdge, u]
+               );
+                if (distance[u] ==
+               (distance[minEdge] + matr[minEdge, u]))
+                {
+                    parent[u] = minEdge;
+                }
+            }
+        }
+    }
+}
+
+Graph tabl = new Graph("E:\\vstudio\\rep\\pr2mat\\pr2mat\\TextFile2.txt");
+Console.WriteLine("Введите номер вершины, расстояние до которой будет найдено ");
+int v = Convert.ToInt32(Console.ReadLine());
+DijkstraAlgm(tabl, v);
+for (int i = 0; i < tabl.numEdges; i++)
+{
+    Console.WriteLine($"Расстояние до точки {i} равно {distance[i]}");
+    int u = i;
+    Console.Write($"Путь до точки {i}: {u}");
+    while (parent[u] != -1)
+    {
+        Console.Write($" <- {parent[u]}");
+        u = parent[u];
+    }
+    Console.WriteLine();
+    Console.WriteLine();
+}
+
+
+
+public class Graph
+{
+    public int[,] adjacency;
+    public int numEdges; // количество вершин графа
+                         //конструктор, считывающий граф из файла
+    public Graph(string fileName)
+    {
+        int n, j;
+        string line;
+        char[] delimiterChars = new char[] { ',', ' ', ';', '.' };
+        using (StreamReader file = new StreamReader(fileName))
+        {
+            n = int.Parse(file.ReadLine()); // ввод размерности
+            this.numEdges = n;
+            this.adjacency = new int[n, n];
+            // ввод матрицы
+            for (int i = 0; (i < n) &&
+            ((line = file.ReadLine()) != null); i++)
+            {
+                string[] numbers = line.Split(delimiterChars,
+                StringSplitOptions.RemoveEmptyEntries);
+                j = 0;
+                foreach (string numString in numbers)
+                {
+                    int x;
+                    bool canConvert = int.TryParse(numString, out x);
+                    if (canConvert == true)
+                    {
+                        this.adjacency[i, j] = x;
+                        j++;
+                    }
+                }
+            }
+        }
+    }
+}
