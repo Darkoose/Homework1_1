@@ -1,0 +1,48 @@
+string clich2 = Console.ReadLine();
+int vozrst2 = Convert.ToInt32(Console.ReadLine());
+string name_hoz2 = Console.ReadLine();
+int nomer_chip2 = Convert.ToInt32(Console.ReadLine());
+bool priv_besh2 = Convert.ToBoolean(Console.ReadLine());
+Pet Cuper = new Pet(clich2, vozrst2, name_hoz2, nomer_chip2, priv_besh2);
+Cuper.show_info();
+
+
+
+class Pet
+{
+    public string clich;
+    public int vozrst;
+    public string name_hoz;
+    public int nomer_chip;
+    public bool priv_besh;
+    public Pet(string clich1, int vozrst1, string name_hoz1)
+    {
+        clich = clich1;
+        vozrst = vozrst1;
+        name_hoz = name_hoz1;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    public Pet(string clich2, int vozrst2, string name_hoz2, int nomer_chip2, bool priv_besh2)
+    {
+        clich = clich2;
+        vozrst = vozrst2;
+        name_hoz = name_hoz2;
+        nomer_chip = nomer_chip2;
+        priv_besh = priv_besh2;
+    }
+    public Pet(int nomer_chip1)
+    {
+        nomer_chip = nomer_chip1;
+    }
+    public void show_info()
+    {
+        Console.WriteLine("Кличка: " + clich + " Возраст: " + vozrst + " Имя хозяина: " + name_hoz + " Номер чипа: " + nomer_chip + " Прививка от бещенства: " + priv_besh);
+    }
+}
