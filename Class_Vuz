@@ -1,0 +1,45 @@
+using System.Globalization;
+
+class Human
+{
+    public string FIO;
+    public int Age;
+    public string Mail;
+    public string Nomer_telefona;
+    public string Facultet;
+    public string Login;
+    public string Password;
+
+    public Human(string fIO, int age, string mail, string nomer_telefona, string facultet, string login, string password)
+    {
+            FIO = fIO;
+            Age = age;
+            Mail = mail;
+            Nomer_telefona = nomer_telefona;
+            Facultet = facultet;
+            Login = login;
+            Password = password;
+    }
+
+    public void show_info_human()
+    {
+        Console.Write("ФИО: " + FIO + " Возраст: " + Age + " Почта: " + Mail + " Номер Телефона: " + Nomer_telefona + " Факультет: " + Facultet + " Логин: " + Login + " Пароль: " + Password);
+    }
+}
+class Prepodovatel : Human
+{
+    public string Doljnost;
+    public Prepodovatel(string fIO, int age, string mail, string nomer_telefona, string facultet, string login, string password, string doljnost) : base(fIO, age, mail, nomer_telefona, facultet, login, password)
+    {
+        Doljnost = doljnost;
+    }
+}
+class Student : Human
+{
+    public string Gruppa;
+    public int[] Ocenka;
+    public Student(string fIO, int age, string mail, string nomer_telefona, string facultet, string login, string password, string gruppa, int[] ocenka) : base(fIO, age, mail, nomer_telefona, facultet, login, password)
+    {
+        Gruppa = gruppa;
+    }
+}
