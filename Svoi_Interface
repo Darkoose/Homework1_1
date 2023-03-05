@@ -1,0 +1,19 @@
+using System;
+using System.Collections;
+using System.Runtime.ConstrainedExecution;
+using System.Xml.Linq;
+
+interface IMovable
+{
+    static int min_spead = 0;
+    string name { get; set; }
+
+    void move();
+
+}
+class Dron : IMovable
+{
+    public string name { get => name; set => throw new NotImplementedException(); }
+    
+    public void move() => Console.WriteLine("Дрон взлетел");
+}
