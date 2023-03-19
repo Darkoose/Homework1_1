@@ -1,0 +1,59 @@
+Polya pol1 = new Polya { index = 345123, city = "Moscow", ylica = "Lenina", dom = 23 }
+Polya pol2 = new Polya { index = 215478, city = "Moscow", ylica = "Lenina", dom = 21 }
+Polya pol3 = new Polya { index = 102354, city = "Moscow", ylica = "Lenina", dom = 10 }
+Polya pol4 = new Polya { index = 125447, city = "Moscow", ylica = "Lenina", dom = 85 }
+
+Patient p1 = new Patient { Familia = "Frekson", Name = "Tom", Ochestvo = "Vladimirovich", Adres = pol1, Diagnes = "Diarea", Nomer_cart = 2341 }
+Patient p2 = new Patient { Familia = "Frekson", Name = "Sam", Ochestvo = "Vladimirovich", Adres = pol2, Nomer_cart = 4896 }
+Patient p3 = new Patient { Familia = "Frekson", Name = "Tim", Ochestvo = "Genadievich", Adres = pol3, Diagnes = "Diarea", Nomer_cart = 3548 }
+Patient p4 = new Patient { Familia = "Frekson", Name = "Anna", Ochestvo = "Vladimirovna", Adres = pol4, Nomer_cart = 1524 }
+Patient p5 = p1;
+p5.Name = "Victor";
+p5.Nomer_cart = 6573;
+
+Patient[] pacient = new Patient[] { p1, p2, p3, p4, p5 };
+for (int i = 1; i == 5; i++)
+{
+    pacient[i].show_info();
+}
+
+
+class Polya : ICloneable
+{
+    public int index { get; set; }
+    public string city { get; set; }
+    public string ylica { get; set; }
+    public int dom { get; set; }
+    public void show_info_adres()
+    {
+        Console.WriteLine("Адрес: " + "Индекс: " + index + "Город: " + city + "Улица: " + ylica + "Дом: " + dom);
+    }
+}
+class Patient : ICloneable
+{
+    public string Familia { get; set; }
+    public string Name { get; set; }
+    public string Ochestvo { get; set; }
+    public Polya Adres { get; set; }
+    public int Nomer_cart { get; set; }
+    public string Diagnes { get; set; }
+    public object Clone()
+    {
+        Polya polya = new Polya() { index = this.Adres.index, city = this.Adres.city, ylica = this.Adres.ylica, dom = this.Adres.dom };
+        return new Patient
+        {
+            Familia = this.Familia;
+        Name = this.Name;
+        Ochestvo = this.Ochestvo;
+        Diagnes = this.Diagnes;
+        Adres = polya;
+        Nomer_car = this.Nomer_cart;
+        Diagnes = this.Diagnes;
+    }
+}
+public void show_info()
+{
+    Console.WriteLine("Фамилия: " + Familia + "Имя: " + Name + "Очество: " + Ochestvo + "Номер карты: " + Convert.ToString(Nomer_cart) + "Диагноз: " + Diagnes);
+    this.Adres.show_info_adres();
+}
+}
