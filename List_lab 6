@@ -1,0 +1,75 @@
+class Bill
+{
+    string Last_Name;
+    long Nomer_Telf;
+    long Tarif;
+    int Skidka;
+    int Vremy_nach_ras;
+    int Vremy_okon_ras;
+    int Summa;
+}
+
+class Payer
+{
+    string bill;
+    int priznak;
+    string date_plateja;
+    int summa_plateja;
+}
+
+class ListPayer
+{
+    List<Payer> list_payer = new List<Payer>;
+    string data;
+    int nommer_spisca;
+
+    public void dob(Payer payer)
+    {
+        list_payer.Add(payer);
+    }
+
+    public void delet(Payer payer)
+    {
+        list_payer.Remuve(payer)
+    }
+
+    public void poisk_nomert(long Nomer_Telf)
+    {
+        for (int i = 0; i < list_payer.Count; i++)
+        {
+            if (list_payer[i].Bill.Nomer_Telf == Nomer_Telf) show_info()
+        }
+    }
+
+    public void poisk_lastname(long Last_Name)
+    {
+        for (int i = 0; i < list_payer.Count; i++)
+        {
+            if (list_payer[i].Bill.Last_Name == Last_Name) show_info()
+        }
+    }
+
+    public void poisk_datapl(string date_plateja)
+    {
+        for (int i = 0; i < list_payer.Count; i++)
+        {
+            if (list_payer[i].Payer.date_plateja == date_plateja) show_info()
+        }
+    }
+
+    public int summa_pl()
+    {
+        int a = 0;
+        for (int i = 0; i < list_payer.Count; i++)
+        {
+            int summa = a + list_payer[i].summa_plateja;
+        }
+        return summa;
+    }
+
+    public void show_info(int nommer_element_spisca)
+    {
+        Console.WriteLine("Фамилия: " + list_payer[nommer_element_spisca].Bill.Last_Name + "Номер телефона: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Nomer_Telf) + "Тариф: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Tarif) + "Скидка в процентах: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Skidka) + "Время начала разговора: " + list_payer[nommer_element_spisca].Bill.Vrema_nach_ras + "Время окончания разговора: " + list_payer[nommer_element_spisca].Bill.Vrema_ocon_ras + "Сумма к оплате: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Summa));
+    }
+
+}
