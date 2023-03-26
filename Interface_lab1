@@ -10,18 +10,40 @@ pol5.dom = 32;
 
 Patient p1 = new Patient { Familia = "Frekson", Name = "Tom", Ochestvo = "Vladimirovich", Adres = pol1, Diagnes = "Diarea", Nomer_cart = 2341 };
 Patient p2 = new Patient { Familia = "Arekson", Name = "Sam", Ochestvo = "Vladimirovich", Adres = pol2, Nomer_cart = 4896 };
-Patient p3 = new Patient { Familia = "Irekson", Name = "Tim", Ochestvo = "Genadievich", Adres = pol3, Diagnes = "Diarea", Nomer_cart = 3548 };
+Patient p3 = new Patient { Familia = "Irekson", Name = "Tim", Ochestvo = "Genadievich", Adres = pol3, Diagnes = "Prostuda", Nomer_cart = 3548 };
 Patient p4 = new Patient { Familia = "Crekson", Name = "Anna", Ochestvo = "Vladimirovna", Adres = pol4, Nomer_cart = 1524 };
 Patient p5 = (Patient)p1.Clone();
 p5.Name = "Victor";
 p5.Nomer_cart = 6573;
 
 Patient[] pacient = new Patient[] { p1, p2, p3, p4, p5 };
+
 for (int i = 0; i < pacient.Length; i++)
 {
     pacient[i].show_info();
 }
 
+if (p1.CompareTo(p5) > 0)
+{
+    Console.WriteLine("Пациент " + p1.Name + ">" + "Пациента" + p5.Name)
+}
+else if (p1.CompareTo(p5) < 0)
+{
+    Console.WriteLine("Пациент " + p1.Name + "<" + "Пациента" + p5.Name)
+}
+else
+{
+    Console.WriteLine("Пациент " + p1.Name + "=" + "Пациента" + p5.Name)
+}
+
+Array.Sort(pacient, new Pacient_nc());
+Console.WriteLine("Пациенты отсортированные по номеру карты:");
+foreach (Patient p in pacient)
+{
+    Console.WriteLine("{0} - {4}", p.Nomer_cart p.Name p.Familia)
+}
+
+Console.WriteLine("Введите интервал номер карт, по которым нужно найти пациента:")
 int a = Convert.ToInt32(Console.ReadLine());
 int b = Convert.ToInt32(Console.ReadLine());
 for (int i = 0; i < pacient.Length; i++)
@@ -34,6 +56,17 @@ for (int i = 0; i < pacient.Length; i++)
 
 }
 
+Console.WriteLine("Введите диагноз:")
+string g = Console.ReadLine();
+for (int i = 0; i < pacient.Length; i++)
+{
+    if (g == pacient[i].Diagnes)
+    {
+        pacient[i].show_info();
+    }
+}
+
+
 class Polya : ICloneable
 {
     public int index { get; set; }
@@ -44,7 +77,7 @@ class Polya : ICloneable
     public object Clone()
     {
         return new Polya { index = this.index; city = this.city; ylica = this.ylica; dom = this.dom}
-    }
+}
 {
     Console.WriteLine("Адрес: " + "Индекс: " + index + "Город: " + city + "Улица: " + ylica + "Дом: " + Convert.ToString(dom));
 
@@ -80,4 +113,14 @@ public void show_info()
     Console.WriteLine("Фамилия: " + Familia + "Имя: " + Name + "Очество: " + Ochestvo + "Номер карты: " + Convert.ToString(Nomer_cart) + "Диагноз: " + Diagnes);
     this.Adres.show_info_adres();
 }
+}
+
+class Pacient_nc : IComparer<Patient>
+{
+    public int Compare(Patient p1, Patient p2)
+    {
+        if (p1.Nomer_cart > p2.Nomer_cart) return 1;
+        else if (p1.Nomer_cart < p2.Nomer_cart) return -1;
+        else return 0;
+    }
 }
