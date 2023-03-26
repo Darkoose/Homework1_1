@@ -1,33 +1,36 @@
-Polya pol1 = new Polya { index = 345123, city = "Moscow", ylica = "Lenina", dom = 23 }
-Polya pol2 = new Polya { index = 215478, city = "Moscow", ylica = "Lenina", dom = 21 }
-Polya pol3 = new Polya { index = 102354, city = "Moscow", ylica = "Lenina", dom = 10 }
-Polya pol4 = new Polya { index = 125447, city = "Moscow", ylica = "Lenina", dom = 85 }
+using System.Xml.Linq;
+using System;
+
+Polya pol1 = new Polya { index = 345123, city = "Moscow", ylica = "Lenina", dom = 23 };
+Polya pol2 = new Polya { index = 215478, city = "Moscow", ylica = "Lenina", dom = 21 };
+Polya pol3 = new Polya { index = 102354, city = "Moscow", ylica = "Lenina", dom = 10 };
+Polya pol4 = new Polya { index = 125447, city = "Moscow", ylica = "Lenina", dom = 85 };
 Polya pol5 = (Polya)pol1.Clone();
 pol5.dom = 32;
 
-Patient p1 = new Patient { Familia = "Frekson", Name = "Tom", Ochestvo = "Vladimirovich", Adres = pol1, Diagnes = "Diarea", Nomer_cart = 2341 }
-Patient p2 = new Patient { Familia = "Arekson", Name = "Sam", Ochestvo = "Vladimirovich", Adres = pol2, Nomer_cart = 4896 }
-Patient p3 = new Patient { Familia = "Irekson", Name = "Tim", Ochestvo = "Genadievich", Adres = pol3, Diagnes = "Diarea", Nomer_cart = 3548 }
-Patient p4 = new Patient { Familia = "Crekson", Name = "Anna", Ochestvo = "Vladimirovna", Adres = pol4, Nomer_cart = 1524 }
+Patient p1 = new Patient { Familia = "Frekson", Name = "Tom", Ochestvo = "Vladimirovich", Adres = pol1, Diagnes = "Diarea", Nomer_cart = 2341 };
+Patient p2 = new Patient { Familia = "Arekson", Name = "Sam", Ochestvo = "Vladimirovich", Adres = pol2, Nomer_cart = 4896 };
+Patient p3 = new Patient { Familia = "Irekson", Name = "Tim", Ochestvo = "Genadievich", Adres = pol3, Diagnes = "Diarea", Nomer_cart = 3548 };
+Patient p4 = new Patient { Familia = "Crekson", Name = "Anna", Ochestvo = "Vladimirovna", Adres = pol4, Nomer_cart = 1524 };
 Patient p5 = (Patient)p1.Clone();
 p5.Name = "Victor";
 p5.Nomer_cart = 6573;
 
 Patient[] pacient = new Patient[] { p1, p2, p3, p4, p5 };
- for (int i = 0; i < pacient.Length; i++)
+for (int i = 0; i < pacient.Length; i++)
 {
     pacient[i].show_info();
 }
 
-int a = ConvertToInt32(Console.ReadLine())
-int b = ConvertToInt32(Console.ReadLine())
+int a = Convert.ToInt32(Console.ReadLine());
+int b = Convert.ToInt32(Console.ReadLine());
 for (int i = 0; i < pacient.Length; i++)
 {
-   if (pacient[i].Nomer_cart >= a && pacient[i].Nomer_cart <= b)
-   {
-    pacient[i].show_info();
-   }
-   else
+    if (pacient[i].Nomer_cart >= a && pacient[i].Nomer_cart <= b)
+    {
+        pacient[i].show_info();
+    }
+    else;
 
 }
 
@@ -37,15 +40,14 @@ class Polya : ICloneable
     public string city { get; set; }
     public string ylica { get; set; }
     public int dom { get; set; }
-    public void show_info_adres()
+    public void show_info_adres();
     public object Clone()
     {
-        return new Polya {index = this.index; city = this.city; ylica = this.ylica; dom = this.dom}
+        return new Polya { index = this.index; city = this.city; ylica = this.ylica; dom = this.dom}
     }
-    {
-        Console.WriteLine("Адрес: " + "Индекс: " +index+  "Город: " +city+  "Улица: " +ylica+ "Дом: " + Convert.ToString(dom) );
-    }
-}
+{
+    Console.WriteLine("Адрес: " + "Индекс: " + index + "Город: " + city + "Улица: " + ylica + "Дом: " + Convert.ToString(dom));
+
 class Patient : ICloneable, IComparable<Pacient>
 {
     public string Familia { get; set; }
@@ -56,7 +58,7 @@ class Patient : ICloneable, IComparable<Pacient>
     public string Diagnes { get; set; }
     public object Clone()
     {
-        Polya polya = new Polya() { index = this.Adres.index; city = this.Adres.city; ylica = this.Adres.ylica; dom = this.Adres.dom };
+        Polya polya = new Polya() { index = this.Adres.index; city = this.Adres.city; ylica = this.Adres.ylica; dom = this.Adres.dom }
         return new Patient
         {
             Familia = this.Familia;
@@ -69,9 +71,9 @@ class Patient : ICloneable, IComparable<Pacient>
         }
     }
     public int CompareTo(Pacient p)
-    {
-        return this.Nomer_cart.CompareTo(p.Nomer_cart);
-    }
+{
+    return this.Nomer_cart.CompareTo(p.Nomer_cart);
+}
 }
 public void show_info()
 {
