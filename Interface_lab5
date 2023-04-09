@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using System;
+using System.Reflection;
 
 Polya pol1 = new Polya { index = 345123, city = "Moscow", ylica = "Lenina", dom = 23 };
 Polya pol2 = new Polya { index = 215478, city = "Moscow", ylica = "Lenina", dom = 21 };
@@ -11,7 +12,7 @@ pol5.dom = 32;
 Patient p1 = new Patient { Familia = "Frekson", Name = "Tom", Ochestvo = "Vladimirovich", Adres = pol1, Diagnes = "Diarea", Nomer_cart = 2341 };
 Patient p2 = new Patient { Familia = "Arekson", Name = "Sam", Ochestvo = "Vladimirovich", Adres = pol2, Nomer_cart = 4896 };
 Patient p3 = new Patient { Familia = "Irekson", Name = "Tim", Ochestvo = "Genadievich", Adres = pol3, Diagnes = "Prostuda", Nomer_cart = 3548 };
-Patient p4 = new Patient { Familia = "Crekson", Name = "Anna", Ochestvo = "Vladimirovna", Adres = pol4, Nomer_cart = 1524 };
+Patient p4 = new Patient { Familia = "Crekson", Name = "Anna", Ochestvo = "Vladimirovna", Adres = pol4, Diagnes = "Prostuda", Nomer_cart = 1524 };
 Patient p5 = (Patient)p1.Clone();
 p5.Name = "Victor";
 p5.Nomer_cart = 6573;
@@ -23,27 +24,30 @@ for (int i = 0; i < pacient.Length; i++)
     pacient[i].show_info();
 }
 
+Console.WriteLine();
 if (p1.CompareTo(p5) > 0)
 {
-    Console.WriteLine("Пациент " + p1.Name + ">" + "Пациента" + p5.Name)
+    Console.WriteLine("Пациент " + p1.Name + " > " + "Пациента " + p5.Name);
 }
 else if (p1.CompareTo(p5) < 0)
 {
-    Console.WriteLine("Пациент " + p1.Name + "<" + "Пациента" + p5.Name)
+    Console.WriteLine("Пациент " + p1.Name + " < " + "Пациента " + p5.Name);
 }
 else
 {
-    Console.WriteLine("Пациент " + p1.Name + "=" + "Пациента" + p5.Name)
+    Console.WriteLine("Пациент " + p1.Name + " = " + "Пациента " + p5.Name);
 }
 
 Array.Sort(pacient, new Pacient_nc());
+Console.WriteLine();
 Console.WriteLine("Пациенты отсортированные по номеру карты:");
 foreach (Patient p in pacient)
 {
-    Console.WriteLine("{0} - {4}", p.Nomer_cart p.Name p.Familia)
+    Console.WriteLine("{0} - {1} {2}", p.Nomer_cart, p.Name, p.Familia);
 }
 
-Console.WriteLine("Введите интервал номер карт, по которым нужно найти пациента:")
+Console.WriteLine();
+Console.WriteLine("Введите интервал номер карт, по которым нужно найти пациента:");
 int a = Convert.ToInt32(Console.ReadLine());
 int b = Convert.ToInt32(Console.ReadLine());
 for (int i = 0; i < pacient.Length; i++)
@@ -52,11 +56,10 @@ for (int i = 0; i < pacient.Length; i++)
     {
         pacient[i].show_info();
     }
-    else;
-
 }
 
-Console.WriteLine("Введите диагноз:")
+Console.WriteLine();
+Console.WriteLine("Введите диагноз:");
 string g = Console.ReadLine();
 for (int i = 0; i < pacient.Length; i++)
 {
@@ -73,15 +76,17 @@ class Polya : ICloneable
     public string city { get; set; }
     public string ylica { get; set; }
     public int dom { get; set; }
-    public void show_info_adres();
-    public object Clone()
+    public void show_info_adres()
     {
-        return new Polya { index = this.index; city = this.city; ylica = this.ylica; dom = this.dom}
+        Console.WriteLine("Адрес: " + " Индекс: " + index + " Город: " + city + " Улица: " + ylica + " Дом: " + Convert.ToString(dom)); 
+    }
+        public object Clone()
+        {
+            return new Polya { index = this.index, city = this.city, ylica = this.ylica, dom = this.dom };
+        }  
 }
-{
-    Console.WriteLine("Адрес: " + "Индекс: " + index + "Город: " + city + "Улица: " + ylica + "Дом: " + Convert.ToString(dom));
 
-class Patient : ICloneable, IComparable<Pacient>
+class Patient : ICloneable, IComparable<Patient>
 {
     public string Familia { get; set; }
     public string Name { get; set; }
@@ -89,30 +94,31 @@ class Patient : ICloneable, IComparable<Pacient>
     public Polya Adres { get; set; }
     public int Nomer_cart { get; set; }
     public string Diagnes { get; set; }
+
     public object Clone()
     {
-        Polya polya = new Polya() { index = this.Adres.index; city = this.Adres.city; ylica = this.Adres.ylica; dom = this.Adres.dom }
+        Polya polya = new Polya() { index = this.Adres.index, city = this.Adres.city, ylica = this.Adres.ylica, dom = this.Adres.dom };
         return new Patient
         {
-            Familia = this.Familia;
-            Name = this.Name;
-            Ochestvo = this.Ochestvo;
-            Diagnes = this.Diagnes;
-            Adres = polya;
-            Nomer_car = this.Nomer_cart;
-            Diagnes = this.Diagnes;
-        }
+           Familia = this.Familia,
+           Name = this.Name,
+           Ochestvo = this.Ochestvo,
+           Adres = polya,
+           Nomer_cart = this.Nomer_cart,
+           Diagnes = this.Diagnes
+        };
     }
-    public int CompareTo(Pacient p)
-{
-    return this.Nomer_cart.CompareTo(p.Nomer_cart);
-}
-}
-public void show_info()
-{
-    Console.WriteLine("Фамилия: " + Familia + "Имя: " + Name + "Очество: " + Ochestvo + "Номер карты: " + Convert.ToString(Nomer_cart) + "Диагноз: " + Diagnes);
-    this.Adres.show_info_adres();
-}
+    
+    public int CompareTo(Patient p)
+    {
+        return this.Nomer_cart.CompareTo(p.Nomer_cart);
+    }
+
+    public void show_info()
+    {
+        Console.WriteLine("Фамилия: " + Familia + " Имя: " + Name + " Отчество: " + Ochestvo + " Номер карты: " + Convert.ToString(Nomer_cart) + " Диагноз: " + Diagnes);
+        this.Adres.show_info_adres();
+    }
 }
 
 class Pacient_nc : IComparer<Patient>
