@@ -1,51 +1,105 @@
-class Bill
+Bill bil1 = new Bill { Last_Name = "Fredin", Nomer_Telf = 9512093121, Skidka = 30, Tarif = "Bezlimit", Vremy_nach_ras = "23.01.2023 12:30", Vremy_okon_ras = "23.01.2023 12:40", Summa = 30 };
+Bill bil2 = new Bill { Last_Name = "Dolgiu", Nomer_Telf = 9512131218, Skidka = 30, Tarif = "Deshevui", Vremy_nach_ras = "23.01.2023 12:30", Vremy_okon_ras = "23.01.2023 12:40", Summa = 45 };
+Bill bil3 = new Bill { Last_Name = "Smolin", Nomer_Telf = 9511097301, Skidka = 30, Tarif = "Bezlimit", Vremy_nach_ras = "23.01.2023 12:30", Vremy_okon_ras = "23.01.2023 12:05", Summa = 20 };
+
+Payer payer1 = new Payer { bill = bil1, priznak = 500, date_plateja = "24.01.2023", summa_plateja = 300 };
+Payer payer2 = new Payer { bill = bil2, priznak = 400, date_plateja = "24.01.2023", summa_plateja = 200 };
+Payer payer3 = new Payer { bill = bil3, priznak = 200, date_plateja = "24.01.2023", summa_plateja = 100 };
+
+ListPayer list = new ListPayer { list_payer = new List<Payer>(), data = "20.01.2023", nommer_spisca = 1 };
+list.dob(payer1);
+list.dob(payer2);
+list.dob(payer3);
+
+list.show_info();
+
+Console.WriteLine();
+Console.WriteLine("После удаления пользователя payer3 из списка: ");
+list.delete(payer3);
+list.show_info();
+
+Console.WriteLine();
+Console.WriteLine("Введите номер телефона: ");
+long a = Convert.ToInt64(Console.ReadLine());
+list.poisk_nomert(a);
+
+Console.WriteLine();
+Console.WriteLine("Введите фамилию: ");
+string b = Console.ReadLine();
+list.poisk_lastname(b);
+
+Console.WriteLine();
+Console.WriteLine("Введите дату платежа: ");
+string с = Console.ReadLine();
+list.poisk_datapl(с);
+
+Console.WriteLine();
+Console.WriteLine("Сумма платежей списка: " + Convert.ToString(list.summa_pl()));
+
+
+public class Bill
 {
-    string Last_Name;
-    long Nomer_Telf;
-    long Tarif;
-    int Skidka;
-    int Vremy_nach_ras;
-    int Vremy_okon_ras;
-    int Summa;
+    public string Last_Name;
+    public long Nomer_Telf;
+    public string Tarif;
+    public int Skidka;
+    public string Vremy_nach_ras;
+    public string Vremy_okon_ras;
+    public int Summa;
+
+    public void show_info_Bill()
+    {
+        Console.WriteLine("Фамилия: " + Last_Name + " Номер телефона: " + Convert.ToString(Nomer_Telf) + " Тариф: " 
+            + Convert.ToString(Tarif) + " Скидка в процентах: " + Convert.ToString(Skidka) + " Время начала разговора: " + Convert.ToString(Vremy_nach_ras)
+            + " Время окончания разговора: " + Convert.ToString(Vremy_okon_ras) + " Сумма платежа: " + Convert.ToString(Summa));
+    }
 }
 
-class Payer
+public class Payer
 {
-    string bill;
-    int priznak;
-    string date_plateja;
-    int summa_plateja;
+    public Bill bill;
+    public int priznak;
+    public string date_plateja;
+    public int summa_plateja;
+
+    public void show_info_Payer()
+    {
+        Console.Write("Чек: ");
+        bill.show_info_Bill();
+        Console.WriteLine(" Сколько есть денег: " + Convert.ToString(priznak) + " Дата платежа: " + date_plateja + " Сумма платежа: " + Convert.ToString(summa_plateja));
+    }
 }
 
 class ListPayer
 {
-    List<Payer> list_payer = new List<Payer>;
-    string data;
-    int nommer_spisca;
+    public List<Payer> list_payer;
+    public string data;
+    public int nommer_spisca;
+
 
     public void dob(Payer payer)
     {
         list_payer.Add(payer);
     }
 
-    public void delet(Payer payer)
+    public void delete(Payer payer)
     {
-        list_payer.Remuve(payer)
+        list_payer.Remove(payer);
     }
 
     public void poisk_nomert(long Nomer_Telf)
     {
         for (int i = 0; i < list_payer.Count; i++)
         {
-            if (list_payer[i].Bill.Nomer_Telf == Nomer_Telf) show_info()
+            if (list_payer[i].bill.Nomer_Telf == Nomer_Telf) list_payer[i].show_info_Payer();
         }
     }
 
-    public void poisk_lastname(long Last_Name)
+    public void poisk_lastname(string Last_Name)
     {
         for (int i = 0; i < list_payer.Count; i++)
         {
-            if (list_payer[i].Bill.Last_Name == Last_Name) show_info()
+            if (list_payer[i].bill.Last_Name == Last_Name) list_payer[i].show_info_Payer();
         }
     }
 
@@ -53,23 +107,27 @@ class ListPayer
     {
         for (int i = 0; i < list_payer.Count; i++)
         {
-            if (list_payer[i].Payer.date_plateja == date_plateja) show_info()
+            if (list_payer[i].date_plateja == date_plateja) list_payer[i].show_info_Payer();
         }
     }
 
     public int summa_pl()
     {
-        int a = 0;
+        int summa = 0;
         for (int i = 0; i < list_payer.Count; i++)
         {
-            int summa = a + list_payer[i].summa_plateja;
+            summa = summa + list_payer[i].summa_plateja;
         }
         return summa;
     }
 
-    public void show_info(int nommer_element_spisca)
+    public void show_info()
     {
-        Console.WriteLine("Фамилия: " + list_payer[nommer_element_spisca].Bill.Last_Name + "Номер телефона: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Nomer_Telf) + "Тариф: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Tarif) + "Скидка в процентах: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Skidka) + "Время начала разговора: " + list_payer[nommer_element_spisca].Bill.Vrema_nach_ras + "Время окончания разговора: " + list_payer[nommer_element_spisca].Bill.Vrema_ocon_ras + "Сумма к оплате: " + Convert.ToString(list_payer[nommer_element_spisca].Bill.Summa));
+        for (int i = 0; i < list_payer.Count; i++)
+        {
+            list_payer[i].show_info_Payer();
+        }
+        Console.WriteLine("Дата: " + data + " Номер списка: " + Convert.ToString(nommer_spisca));
     }
 
 }
