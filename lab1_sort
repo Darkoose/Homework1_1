@@ -1,0 +1,118 @@
+using System.IO;
+using System.Linq.Expressions;
+using static System.Net.Mime.MediaTypeNames;
+
+int[] mass;
+Console.WriteLine("Введите 0 - если хотите ввести данные сами;");
+Console.WriteLine("Введите 1 - если хотите считать данные с файла;");
+Console.WriteLine("Введите 2 - если хотите получить случайные данные;");
+int b = Convert.ToInt32(Console.ReadLine());
+switch (b)
+{
+    case 0:
+        ReadConsole Spisoc = new ReadConsole();
+        Spisoc.read();
+        mass = new int[Spisoc.spisoc.Count];
+        Spisoc.spisoc.CopyTo(mass);
+        break;
+    case 1:
+        ReadFile Spisoc1 = new ReadFile();
+        Spisoc1.read_fille();
+        mass = new int[Spisoc1.spisoc.Count];
+        Spisoc1.spisoc.CopyTo(mass);
+        break;
+    case 2:
+        ReadRandom Spisoc2 = new ReadRandom();
+        Spisoc2.random_chislo();
+        mass = new int[Spisoc2.spisoc.Count];
+        Spisoc2.spisoc.CopyTo(mass);
+        break;
+    default:
+        Console.WriteLine("Ошибка, перезапустите программу");
+        break;
+}
+
+class ReadConsole
+{
+    public List<int> spisoc;
+    public  ReadConsole()
+    {
+        spisoc = new List<int>();
+    }
+    public void read()
+    {
+        Console.WriteLine("Введите количество данных: ");
+        int dlina_danye = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Введите данныe: ");
+        for (int i = 0; i < dlina_danye; i++)
+        {
+            int chislo = Convert.ToInt32(Console.ReadLine());
+            spisoc.Add(chislo);
+        }
+    }
+}
+
+class ReadFile
+{
+    public List<int> spisoc;
+    public ReadFile()
+    {
+        spisoc = new List<int>();
+    }
+    public void read_fille()
+    {
+        using (StreamReader potok = new StreamReader("E:\\Visual\\TEst\\FileList.txt"))
+        {
+            int chislo = Convert.ToInt32(potok.ReadLine());
+            while (chislo != null)
+            {
+                spisoc.Add(chislo);
+                chislo = Convert.ToInt32(potok.ReadLine());
+            }
+        }
+    }
+}
+
+class ReadRandom
+{
+    public List<int> spisoc;
+    public ReadRandom()
+    {
+        spisoc = new List<int>();
+    }
+    public void random_chislo()
+    {
+        int a = Convert.ToInt32(Console.ReadLine());
+        Random chislo = new Random();
+        for (int i = 0; i < a; i++)
+        {
+            int x = chislo.Next();
+            spisoc.Add(x);
+        }
+    }
+}
+
+class Gnom_Sort
+{
+    int[] mass_gnom;
+    public Gnom_Sort(int[] mass)
+    {
+        mass_gnom = mass.Take(mass.Length).ToArray();
+    }
+    public void gnom_sort()
+    {
+        int i = 0;
+        while (mass_gnom.Length > i) 
+        {
+            if (i > 0 && mass_gnom[i] < mass_gnom[i - 1])
+            {
+                int g = mass_gnom[i];
+                mass_gnom[i] = mass_gnom[i - 1];
+                mass_gnom[i - 1] = g;
+            }
+            else
+                i = i + 1;
+
+        }
+    }
+}
