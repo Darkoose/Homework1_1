@@ -28,9 +28,39 @@ switch (b)
         Spisoc2.spisoc.CopyTo(mass);
         break;
     default:
+        mass = new int[0];
         Console.WriteLine("Ошибка, перезапустите программу");
         break;
 }
+
+
+Console.WriteLine("Введите число 0 - если хотите отсортировать методом подсчетом.");
+Console.WriteLine("Введите число 1 - если хотите отсортировать гномий сортировкой.");
+Console.WriteLine("Введите число 2 - если хотите отсортировать сортировкой расческой.");
+int с = Convert.ToInt32(Console.ReadLine());
+switch (с)
+{
+    case 0:
+        Pod_Sort Sortirov = new Pod_Sort(mass);
+        Sortirov.pod_sort();
+        Sortirov.show_mass3();
+        break;
+    case 1:
+        Gnom_Sort Sortirov1 = new Gnom_Sort(mass);
+        Sortirov1.gnom_sort();
+        Sortirov1.show_mass1();
+        break;
+    case 2:
+        Ras_Sort Sortirov2 = new Ras_Sort(mass);
+        Sortirov2.ras_sort();
+        Sortirov2.show_mass2();
+        break;
+    default:
+        Console.WriteLine("Ошибка, перезапустите программу");
+        break;
+}
+
+
 
 class ReadConsole
 {
@@ -43,10 +73,11 @@ class ReadConsole
     {
         Console.WriteLine("Введите количество данных: ");
         int dlina_danye = Convert.ToInt32(Console.ReadLine());
+        int chislo;
         Console.WriteLine("Введите данныe: ");
         for (int i = 0; i < dlina_danye; i++)
         {
-            int chislo = Convert.ToInt32(Console.ReadLine());
+            chislo = Convert.ToInt32(Console.ReadLine());
             spisoc.Add(chislo);
         }
     }
@@ -63,11 +94,13 @@ class ReadFile
     {
         using (StreamReader potok = new StreamReader("E:\\Visual\\TEst\\FileList.txt"))
         {
-            int chislo = Convert.ToInt32(potok.ReadLine());
-            while (chislo != null)
+            string prov = potok.ReadLine();
+            int chislo;
+            while (prov != null)
             {
+                chislo = Convert.ToInt32(prov);
                 spisoc.Add(chislo);
-                chislo = Convert.ToInt32(potok.ReadLine());
+                prov = potok.ReadLine();
             }
         }
     }
@@ -101,6 +134,7 @@ class Gnom_Sort
     }
     public void gnom_sort()
     {
+        show_mass1();
         int i = 0;
         while (mass_gnom.Length > i) 
         {
@@ -109,10 +143,116 @@ class Gnom_Sort
                 int g = mass_gnom[i];
                 mass_gnom[i] = mass_gnom[i - 1];
                 mass_gnom[i - 1] = g;
+                i--;
             }
             else
                 i = i + 1;
 
         }
+    }
+    public void show_mass1()
+    {
+        for (int i = 0;i < mass_gnom.Length; i++)
+        {
+            Console.Write(mass_gnom[i]);
+            Console.Write(" ");
+        }
+        Console.WriteLine();
+    }
+}
+
+class Ras_Sort
+{
+    int[] mass_ras;
+    public Ras_Sort(int[] mass)
+    {
+        mass_ras = mass.Take(mass.Length).ToArray();
+    }
+    public void ras_sort()
+    {
+        double f = 1.2473309;
+        int n = mass_ras.Length;
+        int step = Convert.ToInt32(Math.Floor(n / f));
+        while (step >= 1) 
+        {
+            for (int i = 0; i < n - step ; i++)
+            {
+                if (mass_ras[i] >
+                    mass_ras[i + step])
+                {
+                    int g = 0;
+                    g = mass_ras[i];
+                    mass_ras[i] = mass_ras[i + step];
+                    mass_ras[i + step] = g;
+                }
+            }
+            step = Convert.ToInt32(Math.Floor(step / f));
+        }
+    }
+    public void show_mass2()
+    {
+        for (int i = 0; i < mass_ras.Length; i++)
+        {
+            Console.Write(mass_ras[i]);
+            Console.Write(" ");
+        }
+        Console.WriteLine();
+    }
+}
+
+class Pod_Sort
+{
+    int[] mass_pod;
+    public Pod_Sort(int[] mass)
+    {
+        mass_pod = mass.Take(mass.Length).ToArray();
+    }
+    public void pod_sort()
+    {
+        int n = mass_pod.Length;
+        int maxV = mass_pod[0];
+        int minV = mass_pod[0];
+        for (int i = 0; i < n; i++)
+        {
+            if (mass_pod[i] > maxV)
+            {
+                maxV = mass_pod[i];
+            }
+            if (mass_pod[i] < minV)
+            {
+                minV = mass_pod[i];
+            }
+        }
+        int[] kol_mass = new int[maxV - minV + 1];
+        for (int i = minV; i <= maxV; i++)
+        {
+            int kol = 0;
+            for (int j = 0; j < n; j++)
+            {
+                if (mass_pod[j] == i)
+                {
+                    kol++;
+                }
+            }
+            kol_mass[i - minV] = kol;
+        }
+        int kur = 0;
+        for (int i = 0; i < kol_mass.Length; i++)
+        {
+            for (int j = 0; j < kol_mass[i]; j++)
+            {
+                mass_pod[kur] = i + minV;
+                kur++;
+            }
+        }
+    }
+    public void show_mass3()
+    {
+        for (int i = 0; i < mass_pod.Length; i++)
+        {
+            Console.Write(mass_pod[i]);
+            Console.Write(" ");
+        }
+        Console.WriteLine();
     }
 }
