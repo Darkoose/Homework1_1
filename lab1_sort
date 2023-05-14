@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
 using static System.Net.Mime.MediaTypeNames;
@@ -101,7 +102,9 @@ class ReadFile
                 chislo = Convert.ToInt32(prov);
                 spisoc.Add(chislo);
                 prov = potok.ReadLine();
+                Console.Write(chislo + " ");
             }
+            Console.WriteLine();
         }
     }
 }
@@ -115,31 +118,44 @@ class ReadRandom
     }
     public void random_chislo()
     {
+        Console.WriteLine("Введите количество случайных чисел:");
         int a = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Введите верхнее границу чисел:");
+        int b = Convert.ToInt32(Console.ReadLine());
         Random chislo = new Random();
         for (int i = 0; i < a; i++)
         {
-            int x = chislo.Next();
+            int x = chislo.Next(b);
             spisoc.Add(x);
+            Console.Write(spisoc[i] + " ");
         }
+        Console.WriteLine();
     }
 }
 
 class Gnom_Sort
 {
     int[] mass_gnom;
+    string elapsedTime;
+    long col_perest = 0;
+    long col_sravneniy = 0;
     public Gnom_Sort(int[] mass)
     {
         mass_gnom = mass.Take(mass.Length).ToArray();
     }
     public void gnom_sort()
     {
-        show_mass1();
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+
+
         int i = 0;
         while (mass_gnom.Length > i) 
         {
+            col_sravneniy++;
             if (i > 0 && mass_gnom[i] < mass_gnom[i - 1])
             {
+                col_perest++;
                 int g = mass_gnom[i];
                 mass_gnom[i] = mass_gnom[i - 1];
                 mass_gnom[i - 1] = g;
@@ -149,6 +165,10 @@ class Gnom_Sort
                 i = i + 1;
 
         }
+        stopwatch.Stop();
+        TimeSpan ts = stopwatch.Elapsed;
+        elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds);
+        
     }
     public void show_mass1()
     {
@@ -158,18 +178,26 @@ class Gnom_Sort
             Console.Write(" ");
         }
         Console.WriteLine();
+        Console.WriteLine("RunTime " + elapsedTime);
+        Console.WriteLine("Количество перестановок: " + col_perest + " Количество сравнений: " + col_sravneniy);
     }
+
 }
 
 class Ras_Sort
 {
     int[] mass_ras;
+    string elapsedTime;
+    long col_perest = 0;
+    long col_sravneniy = 0;
     public Ras_Sort(int[] mass)
     {
         mass_ras = mass.Take(mass.Length).ToArray();
     }
     public void ras_sort()
     {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
         double f = 1.2473309;
         int n = mass_ras.Length;
         int step = Convert.ToInt32(Math.Floor(n / f));
@@ -177,9 +205,11 @@ class Ras_Sort
         {
             for (int i = 0; i < n - step ; i++)
             {
+                col_sravneniy++;
                 if (mass_ras[i] >
                     mass_ras[i + step])
                 {
+                    col_perest++;
                     int g = 0;
                     g = mass_ras[i];
                     mass_ras[i] = mass_ras[i + step];
@@ -188,6 +218,9 @@ class Ras_Sort
             }
             step = Convert.ToInt32(Math.Floor(step / f));
         }
+        stopwatch.Stop();
+        TimeSpan ts = stopwatch.Elapsed;
+        elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds);
     }
     public void show_mass2()
     {
@@ -197,18 +230,24 @@ class Ras_Sort
             Console.Write(" ");
         }
         Console.WriteLine();
+        Console.WriteLine("RunTime " + elapsedTime);
+        Console.WriteLine("Количество перестановок: " + col_perest + " Количество сравнений: " + col_sravneniy);
     }
 }
 
 class Pod_Sort
 {
     int[] mass_pod;
+    string elapsedTime;
+    long col_sravneniy = 0;
     public Pod_Sort(int[] mass)
     {
         mass_pod = mass.Take(mass.Length).ToArray();
     }
     public void pod_sort()
     {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
         int n = mass_pod.Length;
         int maxV = mass_pod[0];
         int minV = mass_pod[0];
@@ -229,6 +268,7 @@ class Pod_Sort
             int kol = 0;
             for (int j = 0; j < n; j++)
             {
+                col_sravneniy++;
                 if (mass_pod[j] == i)
                 {
                     kol++;
@@ -245,6 +285,9 @@ class Pod_Sort
                 kur++;
             }
         }
+        stopwatch.Stop();
+        TimeSpan ts = stopwatch.Elapsed;
+        elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds / 10);
     }
     public void show_mass3()
     {
@@ -254,5 +297,7 @@ class Pod_Sort
             Console.Write(" ");
         }
         Console.WriteLine();
+        Console.WriteLine("RunTime " + elapsedTime);
+        Console.WriteLine("Количество сравнений: " + col_sravneniy + " Сортировка подсчетом, не содержит перестановок.");
     }
 }
