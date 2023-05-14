@@ -1,0 +1,32 @@
+using Microsoft.Win32.SafeHandles;
+
+Queue<Int32> Chisla = new Queue<int> ();
+Random chislo = new Random();
+int Max = 0;
+int h = Convert.ToInt32(Console.ReadLine());
+for (int i = 0; i < h; i++)
+{
+    int x = chislo.Next(0, 10);
+    Chisla.Enqueue (x);
+}
+for  (int i = 0; i < h; i++)
+{
+    int chis = Chisla.Dequeue();
+    if (Max < chis)
+    {
+        Max = chis;
+    }
+    Chisla.Enqueue(chis);
+}
+for (int i = 0; i < h; i++)
+{
+    int chis = Chisla.Dequeue();
+    if (Max == chis) 
+    {
+        Chisla.Enqueue(0);
+        Chisla.Enqueue(Max);
+        Chisla.Enqueue(0);
+        continue;
+    }
+    Chisla.Enqueue(chis);
+}
