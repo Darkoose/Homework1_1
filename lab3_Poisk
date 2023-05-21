@@ -1,0 +1,212 @@
+using System.Diagnostics;
+using System.IO;
+using System.Linq.Expressions;
+using static System.Net.Mime.MediaTypeNames;
+
+
+int[] mass;
+Console.WriteLine("Введите 1 - если хотите ввести данные сами;");
+Console.WriteLine("Введите 2 - если хотите считать данные с файла;");
+Console.WriteLine("Введите 3 - если хотите получить случайные данные;");
+int b = Convert.ToInt32(Console.ReadLine());
+switch (b)
+{
+    case 1:
+        ReadConsole Spisoc = new ReadConsole();
+        Spisoc.read();
+        mass = new int[Spisoc.spisoc.Count];
+        Spisoc.spisoc.CopyTo(mass);
+        break;
+    case 2:
+        ReadFile Spisoc1 = new ReadFile();
+        Spisoc1.read_fille();
+        mass = new int[Spisoc1.spisoc.Count];
+        Spisoc1.spisoc.CopyTo(mass);
+        break;
+    case 3:
+        ReadRandom Spisoc2 = new ReadRandom();
+        Spisoc2.random_chislo();
+        mass = new int[Spisoc2.spisoc.Count];
+        Spisoc2.spisoc.CopyTo(mass);
+        break;
+    default:
+        mass = new int[0];
+        Console.WriteLine("Ошибка, перезапустите программу");
+        break;
+}
+Console.WriteLine("Введите искомое число: ");
+int g = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("Введите 1 - если хотите использовать линейный поиск;");
+Console.WriteLine("Введите 2 - если хотите использовать двоичный поиск;");
+Console.WriteLine("Введите 3 - если хотите использовать древесный поиск;");
+int h = Convert.ToInt32(Console.ReadLine());
+switch (h)
+{
+    case 1:
+        Linein_poisk lin_poisk = new Linein_poisk(mass, g); 
+        lin_poisk.poisk_l();
+        if (lin_poisk.found == true)
+        {
+            Console.WriteLine("Значение найдено.");
+        }
+        else Console.WriteLine("Значение не найдено.");
+        lin_poisk.show_time();
+        break;
+        case 2:
+        Dvoichniy_Poisk dvoichniy_poisk = new Dvoichniy_Poisk(mass, g);
+        dvoichniy_poisk.poisk_dvo();
+        if (dvoichniy_poisk.found == true)
+        {
+            Console.WriteLine("Значение найдено.");
+        }
+        else Console.WriteLine("Значение не найдено.");
+        dvoichniy_poisk.show_time();
+        break;
+}
+class ReadConsole
+{
+    public List<int> spisoc;
+    public ReadConsole()
+    {
+        spisoc = new List<int>();
+    }
+    public void read()
+    {
+        Console.WriteLine("Введите количество данных: ");
+        int dlina_danye = Convert.ToInt32(Console.ReadLine());
+        int chislo;
+        Console.WriteLine("Введите данные: ");
+        for (int i = 0; i < dlina_danye; i++)
+        {
+            chislo = Convert.ToInt32(Console.ReadLine());
+            spisoc.Add(chislo);
+        }
+    }
+}
+
+class ReadFile
+{
+    public List<int> spisoc;
+    public ReadFile()
+    {
+        spisoc = new List<int>();
+    }
+    public void read_fille()
+    {
+        using (StreamReader potok = new StreamReader("E:\\Visual\\TEst\\FileList.txt"))
+        {
+            string prov = potok.ReadLine();
+            int chislo;
+            while (prov != null)
+            {
+                chislo = Convert.ToInt32(prov);
+                spisoc.Add(chislo);
+                prov = potok.ReadLine();
+                Console.Write(chislo + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
+
+
+class ReadRandom
+{
+    public List<int> spisoc;
+    public ReadRandom()
+    {
+        spisoc = new List<int>();
+    }
+    public void random_chislo()
+    {
+        Console.WriteLine("Введите количество случайных чисел:");
+        int a = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("Введите верхнее границу чисел:");
+        int b = Convert.ToInt32(Console.ReadLine());
+        Random chislo = new Random();
+        for (int i = 0; i < a; i++)
+        {
+            int x = chislo.Next(b);
+            spisoc.Add(x);
+            Console.Write(spisoc[i] + " ");
+        }
+        Console.WriteLine();
+    }
+}
+
+class Linein_poisk
+{
+    string elapsedTime;
+    int[] massiv;
+    int x;
+    public bool found = false;
+    public Linein_poisk(int[] massive, int y)
+    {
+        massiv = massive.Take(massive.Length).ToArray();
+        x = y;
+    }
+    public void poisk_l()
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int i = 0; i < massiv.Length;i++)
+        {
+            if (massiv[i] == x)
+            {
+                found = true;
+            }
+        }
+        stopwatch.Stop();
+        TimeSpan ts = stopwatch.Elapsed;
+        elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds);
+    }
+    public void show_time()
+    {
+        Console.WriteLine();
+        Console.WriteLine("RunTime " + elapsedTime);
+    }
+}
+class Dvoichniy_Poisk
+{
+    string elapsedTime;
+    int[] massiv;
+    int x;
+    public bool found = false;
+    public Dvoichniy_Poisk(int[] massive, int y)
+    {
+        massiv = massive.Take(massive.Length).ToArray();
+        x = y;
+    }
+    public void poisk_dvo()
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int i = 0; i < massiv.Length; i++) ;
+        int L = 0;
+        int R = massiv.Length - 1;
+        while ((L < R) && (found == false))
+        {
+            int m = (L + R) / 2;
+            if (massiv[m] == x)
+            {
+                found = true;
+            }
+            else
+            {
+                if (massiv[m] < x)
+                {
+                    L = m + 1;
+                }
+                else R = m - 1;
+            }
+        }
+        stopwatch.Stop();
+        TimeSpan ts = stopwatch.Elapsed;
+        elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds);
+    }
+    public void show_time()
+    {
+        Console.WriteLine();
+        Console.WriteLine("RunTime " + elapsedTime);
+    }
+}
