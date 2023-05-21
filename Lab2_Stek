@@ -1,32 +1,68 @@
 using Microsoft.Win32.SafeHandles;
 
-Queue<Int32> Chisla = new Queue<int> ();
-Random chislo = new Random();
-int Max = 0;
-int h = Convert.ToInt32(Console.ReadLine());
-for (int i = 0; i < h; i++)
+Stack<int> stek = new Stack<int>();
+Random random = new Random();
+int[] hrom = new int[8];
+Console.WriteLine("Задание 1: ");
+for  (int i = 0; i < 8; i++)
 {
-    int x = chislo.Next(0, 10);
-    Chisla.Enqueue (x);
+    int x = random.Next(1, 10);
+    stek.Push(x);
 }
-for  (int i = 0; i < h; i++)
+Console.WriteLine("Вывод элементов: ");
+for (int i = 0; i < 8; i++)
 {
-    int chis = Chisla.Dequeue();
-    if (Max < chis)
-    {
-        Max = chis;
-    }
-    Chisla.Enqueue(chis);
+    hrom[i] = stek.Pop();
 }
-for (int i = 0; i < h; i++)
+for (int i = 7; 0 <= i; i--)
 {
-    int chis = Chisla.Dequeue();
-    if (Max == chis) 
-    {
-        Chisla.Enqueue(0);
-        Chisla.Enqueue(Max);
-        Chisla.Enqueue(0);
-        continue;
-    }
-    Chisla.Enqueue(chis);
+    Console.WriteLine(hrom[i]);
+    stek.Push(hrom[i]);
+}
+for (int i = 0;i < 5; i++)
+{
+    hrom[i] = stek.Pop();
+}
+int thee = stek.Pop();
+int two = stek.Pop();
+int proiz = thee * two;
+stek.Push(proiz);
+for(int i = 4;0 <= i; i--)
+{
+    stek.Push(hrom[i]);
+}
+Console.WriteLine("Вывод элементов: ");
+for(int i = 0;i < 7; i++)
+{
+    hrom[i] = stek.Pop();
+}
+for (int i = 6; 0 <= i; i--)
+{
+    Console.WriteLine(hrom[i]);
+    stek.Push(hrom[i]);
+}
+Console.WriteLine();
+Console.WriteLine("Задание 2: ");
+for (int i = 0; i < 2; i++)
+{
+    hrom[i] = stek.Pop();
+}
+int five = stek.Pop();
+int fore = stek.Pop();
+int three = stek.Pop();
+int summa = five + fore + three;
+stek.Push(summa);
+for(int i = 4; 0 <= i; i--)
+{
+    stek.Push(hrom[i]);
+}
+Console.WriteLine("Вывод элементов: ");
+for (int i = 0; i < 7; i++)
+{
+    hrom[i] = stek.Pop();
+}
+for (int i = 6; 0 <= i; i--)
+{
+    Console.WriteLine(hrom[i]);
+    stek.Push(hrom[i]);
 }
