@@ -1,0 +1,34 @@
+using Microsoft.Win32.SafeHandles;
+
+Queue<Int32> Chisla = new Queue<int> ();
+Random chislo = new Random();
+int Max = 0;
+Console.WriteLine("Введите длину очереди: ");
+int h = Convert.ToInt32(Console.ReadLine());
+for (int i = 0; i < h; i++)
+{
+    int x = chislo.Next(0, 10);
+    Chisla.Enqueue (x);
+}
+Console.WriteLine("Введите число: ");
+int g = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine("Вывод очереди: ");
+for (int i = 0; i < h; i++)
+{
+    int chislas = Chisla.Dequeue();
+    Console.WriteLine(chislas);
+    Chisla.Enqueue(chislas);
+}
+Console.WriteLine();
+for (int i = 0; i < h; i++)
+{
+    int chislas = Chisla.Dequeue();
+    chislas = chislas + g;
+    Chisla.Enqueue(chislas);
+}
+for (int i = 0; i < Chisla.Count; i++)
+{
+    int chislas = Chisla.Dequeue();
+    Console.WriteLine(chislas);
+    Chisla.Enqueue(chislas);
+}
