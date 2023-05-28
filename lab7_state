@@ -1,0 +1,76 @@
+using PatternStateLib;
+using System;
+
+namespace PatternStateLib
+{
+    public interface IState
+    {
+        string Note { get; }
+        void Pechat(Print print);
+        void Zagryzit_Bumagu(Print print);
+        void Izvlech_zajatu_bumagu(Print print);
+        void Zapravit_Katritj(Print print);
+    }
+}
+public class Print
+{
+    public string model { get; set; }
+    public int chislo_listov { get; set; }
+    public int koli_kraski { get; set; }
+    public double ver_zaja_bumagi { get; set; }
+    public IState state { get; set; }
+    Random rdn;
+    public Print(string models, int chislo_listovs, int koli_kraskis, double ver_zaja_bumagis)
+    {
+        model = models;
+        chislo_listov = chislo_listovs;
+        koli_kraski = koli_kraskis;
+        ver_zaja_bumagi = ver_zaja_bumagis;
+        rdn = new Random();
+        state = new Ojidanie();
+    }
+    public void Ver_Zaja_Bumagi()
+    {
+        if (rdn.NextDouble() < ver_zaja_bumagi)
+        {
+            state = new Zajata_Bumaga();
+            throw new Exception(string.Format("У Принтера {0} зажало бумагу", Pechat))
+        }
+    }
+    public void Pechat()
+    {
+        Ver_Zaja_Bumagi();
+        state.Pechat(this);
+    }
+    public void Zagryzit_Bumagu()
+    {
+        state.Zagryzit_Bumagu(this);
+    }
+    public void Izvlech_zajatu_bumagu()
+    {
+        Ver_Zaja_Bumagi();
+        state.Izvlech_zajatu_bumagu(this)
+    }
+    public void Zapravit_Katritj()
+    {
+        state.Zapravit_Katritj(this);
+    }
+    public override string ToString()
+    {
+        return string.Format("Данные о принтере: \n" + "Модель принтера: {0} \n" + "Вероятность зажатия бумаги: {1} \n" + "Количество краски в картридже: {2} \n" + "Число листов в лотке: {3} \n" + "Текущее состояние: {4} \n", model, ver_zaja_bumagi, koli_kraski, chislo_listov, state.Note)
+    }
+}
+
+public class Pechat_Dock() : IState
+{
+    string note;
+    public Pechat_Dock()
+    {
+        note = "Принтер печатает."
+    }
+    public string Note => note;
+    public void Zagryzit_Bumagu(Print print)
+    {
+        throw new Exception(string.Format("Принтер {0} печатает"))
+    }
+}
