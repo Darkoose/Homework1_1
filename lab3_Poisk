@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq.Expressions;
@@ -43,7 +44,7 @@ int h = Convert.ToInt32(Console.ReadLine());
 switch (h)
 {
     case 1:
-        Linein_poisk lin_poisk = new Linein_poisk(mass, g); 
+        Linein_poisk lin_poisk = new Linein_poisk(mass, g);
         lin_poisk.poisk_l();
         if (lin_poisk.found == true)
         {
@@ -52,7 +53,7 @@ switch (h)
         else Console.WriteLine("Значение не найдено.");
         lin_poisk.show_time();
         break;
-        case 2:
+    case 2:
         Dvoichniy_Poisk dvoichniy_poisk = new Dvoichniy_Poisk(mass, g);
         dvoichniy_poisk.poisk_dvo();
         if (dvoichniy_poisk.found == true)
@@ -61,6 +62,16 @@ switch (h)
         }
         else Console.WriteLine("Значение не найдено.");
         dvoichniy_poisk.show_time();
+        break;
+    case 3:
+        Poisk_Drevesn poisk_Drevesn = new Poisk_Drevesn(mass, g);
+        poisk_Drevesn.poisk_drevo();
+        if (poisk_Drevesn.found == true)
+        {
+            Console.WriteLine("Значение найдено.");
+        }
+        else Console.WriteLine("Значение не найдено.");
+        poisk_Drevesn.show_time();
         break;
 }
 class ReadConsole
@@ -109,7 +120,6 @@ class ReadFile
     }
 }
 
-
 class ReadRandom
 {
     public List<int> spisoc;
@@ -149,7 +159,7 @@ class Linein_poisk
     {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
-        for (int i = 0; i < massiv.Length;i++)
+        for (int i = 0; i < massiv.Length; i++)
         {
             if (massiv[i] == x)
             {
@@ -166,6 +176,7 @@ class Linein_poisk
         Console.WriteLine("RunTime " + elapsedTime);
     }
 }
+
 class Dvoichniy_Poisk
 {
     string elapsedTime;
@@ -181,7 +192,8 @@ class Dvoichniy_Poisk
     {
         Stopwatch stopwatch = new Stopwatch();
         stopwatch.Start();
-        for (int i = 0; i < massiv.Length; i++) ;
+        Array.Sort(massiv);
+        for (int i = 0; i < massiv.Length; i++);
         int L = 0;
         int R = massiv.Length - 1;
         while ((L < R) && (found == false))
@@ -200,6 +212,122 @@ class Dvoichniy_Poisk
                 else R = m - 1;
             }
         }
+        stopwatch.Stop();
+        TimeSpan ts = stopwatch.Elapsed;
+        elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds);
+    }
+    public void show_time()
+    {
+        Console.WriteLine();
+        Console.WriteLine("RunTime " + elapsedTime);
+    }
+}
+
+public class BSTItem
+{
+    public int Value;
+    public BSTItem Left;
+    public BSTItem Rigth;
+
+    public BSTItem(int value)
+    {
+        Value = value;
+    }
+}
+
+public class BST
+{
+    BSTItem Root;
+    public void Clear()
+    {
+        Root = null;
+    }
+
+    private void AddRecur(BSTItem cur, int value)
+    {
+        if (value < cur.Value)
+        {
+            if (cur.Left == null)
+            {
+                cur.Left = new BSTItem(value);
+            }
+            else
+            {
+                AddRecur(cur.Left, value);
+            }
+        }
+        else if (value > cur.Value)
+        {
+
+            if (cur.Rigth == null)
+            {
+                cur.Rigth = new BSTItem(value);
+            }
+            else
+            {
+                AddRecur(cur.Rigth, value);
+            }
+        }
+    }
+
+    public void Add(int value)
+    {
+        if (Root == null)
+        {
+            Root = new BSTItem(value);
+        }
+        else
+        {
+            AddRecur(Root, value);
+        }
+    }
+
+    public bool Search(int value, out int compCount)
+    {
+        BSTItem cur = Root;
+        compCount = 0;
+        while (cur != null)
+        {
+            compCount++;
+            if (cur.Value == value)
+            {
+                return true;
+            }
+            else if (value < cur.Value)
+            {
+                cur = cur.Left;
+            }
+            else if (value > cur.Value)
+            {
+                cur = cur.Rigth;
+            }
+        }
+        return false;
+    }
+}
+class Poisk_Drevesn
+{
+    string elapsedTime;
+    int[] massiv;
+    int x;
+    public bool found = false;
+    BST derevo;
+    int compCount = 0;
+    public Poisk_Drevesn(int[] massiv, int x)
+    {
+        this.massiv = massiv;
+        this.x = x;
+        derevo = new BST();
+        for (int i = 0; i < massiv.Length; i++)
+        {
+            derevo.Add(massiv[i]);
+        }
+    }
+    public void poisk_drevo()
+    {
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        found = derevo.Search(x, out compCount);
         stopwatch.Stop();
         TimeSpan ts = stopwatch.Elapsed;
         elapsedTime = String.Format(" {0:00}:{1:00}:{2:00}.{3:00}", ts.TotalHours, ts.TotalMinutes, ts.TotalSeconds, ts.TotalMilliseconds);
