@@ -1,8 +1,11 @@
 using PatternStateLib;
 using System;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PatternStateLib
-{
+{ 
+
     public interface IState
     {
         string Note { get; }
@@ -11,7 +14,7 @@ namespace PatternStateLib
         void Izvlech_zajatu_bumagu(Print print);
         void Zapravit_Katritj(Print print);
     }
-}
+
 public class Print
 {
     public string model { get; set; }
@@ -34,13 +37,38 @@ public class Print
         if (rdn.NextDouble() < ver_zaja_bumagi)
         {
             state = new Zajata_Bumaga();
-            throw new Exception(string.Format("У Принтера {0} зажало бумагу", Pechat))
+            throw new Exception(string.Format("У Принтера {0} зажало бумагу", model));
         }
+    }
+    public void kol_bumagi()
+    {
+        if (chislo_listov == 0)
+        {
+            state = new Otkas();
+            throw new Exception(string.Format("У Принтера {0} закончилась бумага в лотке.", model));
+        }
+    }
+    public void kol_color_catr()
+    {
+            if (koli_kraski == 0)
+            {
+                state = new Otkas();
+                throw new Exception(string.Format("У Принтера {0} закончилась краска в картриджах", model));
+            }
     }
     public void Pechat()
     {
         Ver_Zaja_Bumagi();
+        kol_color_catr();
+        kol_bumagi();
         state.Pechat(this);
+            if (this.state.GetType() == typeof(Pechat_Dock))
+            {
+                chislo_listov = chislo_listov - 1;
+                koli_kraski = koli_kraski - 1;
+                Thread.Sleep(2000);
+                state = new Ojidanie();
+            }
     }
     public void Zagryzit_Bumagu()
     {
@@ -49,7 +77,7 @@ public class Print
     public void Izvlech_zajatu_bumagu()
     {
         Ver_Zaja_Bumagi();
-        state.Izvlech_zajatu_bumagu(this)
+        state.Izvlech_zajatu_bumagu(this);
     }
     public void Zapravit_Katritj()
     {
@@ -57,20 +85,114 @@ public class Print
     }
     public override string ToString()
     {
-        return string.Format("Данные о принтере: \n" + "Модель принтера: {0} \n" + "Вероятность зажатия бумаги: {1} \n" + "Количество краски в картридже: {2} \n" + "Число листов в лотке: {3} \n" + "Текущее состояние: {4} \n", model, ver_zaja_bumagi, koli_kraski, chislo_listov, state.Note)
+        return string.Format("Данные о принтере: \n" + "Модель принтера: {0} \n" + "Вероятность зажатия бумаги: {1} \n" + "Количество краски в картридже: {2} \n" + "Число листов в лотке: {3} \n" + "Текущее состояние: {4} \n", model, ver_zaja_bumagi, koli_kraski, chislo_listov, state.Note);
     }
 }
 
-public class Pechat_Dock() : IState
+public class Pechat_Dock : IState
 {
     string note;
     public Pechat_Dock()
     {
-        note = "Принтер печатает."
+        note = "Принтер печатает.";
     }
     public string Note => note;
     public void Zagryzit_Bumagu(Print print)
     {
-        throw new Exception(string.Format("Принтер {0} печатает"))
+        throw new Exception(string.Format("Принтер {0} печатает, загружать бумагу в лоток не надо.", print.model));
     }
+    public void Zapravit_Katritj(Print print)
+    {
+        throw new Exception(string.Format("Принтер {0} печатает, заправлять картридж не надо.", print.model));
+    }
+    public void Izvlech_zajatu_bumagu(Print print)
+    {
+        throw new Exception(string.Format("Принтер {0} печатает, извлекать зажатую бумагу не надо.", print.model));
+    }
+    public void Pechat(Print print)
+    {
+        throw new Exception(string.Format("Принтер {0} уже печатает.", print.model));
+    }
+}
+
+public class Zajata_Bumaga : IState
+{
+    string note;
+    public Zajata_Bumaga()
+    {
+        note = "У принтера зажало бумагу.";
+    }
+    public string Note => note;
+    public void Zagryzit_Bumagu(Print print)
+    {
+        throw new Exception(string.Format("У принтера {0} зажало бумагу, загружать бумагу в лоток не надо.", print.model));
+    }
+    public void Zapravit_Katritj(Print print)
+    {
+        throw new Exception(string.Format("У принтера {0} зажало бумагу, заправлять картридж не надо.", print.model));
+    }
+    public void Izvlech_zajatu_bumagu(Print print)
+    {
+        print.state = new Ojidanie();
+    }
+    public void Pechat(Print print)
+    {
+        throw new Exception(string.Format("У принтера {0} зажало бумагу, он не может печатать.", print.model));
+    }
+}
+
+public class Ojidanie : IState
+{
+    string note;
+    public Ojidanie()
+    {
+        note = "Принтер ожидает.";
+    }
+    public string Note => note;
+    public void Pechat(Print print)
+    {
+        print.state = new Pechat_Dock();
+    }
+    public void Izvlech_zajatu_bumagu(Print print)
+    {
+        throw new Exception(string.Format("Принтер {0} в режиме ожидания, бумага не зажата.", print.model));
+    }
+    public void Zapravit_Katritj(Print print)
+    {
+        print.koli_kraski = 100;
+    }
+    public void Zagryzit_Bumagu(Print print)
+    {
+        print.chislo_listov = print.chislo_listov + 100;
+    }
+}
+public class Otkas : IState
+{
+    string note;
+    public Otkas()
+    {
+        note = "Принтер не будет выполнять это действие.";
+    }
+    public string Note => note;
+    public void Pechat(Print print)
+    {
+        throw new Exception(string.Format("Принтер {0} отказывается печатать.", print.model));
+    }
+    public void Izvlech_zajatu_bumagu(Print print)
+    {
+        throw new Exception(string.Format("У принтера {0} нет зажатой бумаги.", print.model));
+    }
+    public void Zapravit_Katritj(Print print)
+    {
+        print.koli_kraski = 100;
+        if (print.chislo_listov != 0)
+        { print.state = new Ojidanie(); }
+    }
+    public void Zagryzit_Bumagu(Print print)
+    {
+        print.chislo_listov = print.chislo_listov + 100;
+        if (print.koli_kraski != 0)
+        { print.state = new Ojidanie(); }
+    }
+}
 }
