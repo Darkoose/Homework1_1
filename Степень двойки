@@ -1,0 +1,14 @@
+int a = Convert.ToInt32(Console.ReadLine());
+int b = a;
+while (b % 2 == 0)
+{
+    b = b / 2;
+}
+if (b == 1)
+{
+    Console.WriteLine("Число является степенью двойки");
+}
+else
+{
+    Console.WriteLine("Не является степенью двойки");
+}
