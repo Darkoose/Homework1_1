@@ -1,0 +1,16 @@
+using Microsoft.VisualBasic;
+Console.Write("Сумма: ");
+double a = Convert.ToDouble(Console.ReadLine());
+Console.Write("Годов: ");
+int year = Convert.ToInt32(Console.ReadLine());
+Console.WriteLine(bank(a, year));
+
+double bank(double a, int year)
+{
+    double c;
+    for (int i = 0; i < year; i++) 
+    {
+        a = a + ((a / 100) * 10);
+    }
+    return a;
+}
