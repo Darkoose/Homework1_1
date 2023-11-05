@@ -1,0 +1,17 @@
+using System.Collections;
+
+int a = Convert.ToInt32(Console.ReadLine());
+List<int> n = new List<int>(a);
+int c = 0;
+n.Add(0);
+n.Add(1);
+n[0] = 1;
+n[1] = 1;
+for (int i = 2; i < a; i++)
+{
+    n.Add(n[i - 1] + n[i - 2]);
+    Console.WriteLine(n[c]);
+    c++;
+}
+Console.WriteLine(n[a - 2]);
+Console.WriteLine(n[a - 1]);
